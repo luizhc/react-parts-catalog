@@ -1,11 +1,15 @@
-import * as React from 'react';
 import './App.css';
-import NavBar from './components/navbar/Navbar';
+import './firebase';
+
+import * as React from 'react';
+
+import PartsList from './components/parts/PartsList';
 
 class App extends React.Component {
   public render(): React.ReactNode {
     return (
-      <NavBar />
+      // <NavBar />
+      <PartsList/>
     );
   }
 }
