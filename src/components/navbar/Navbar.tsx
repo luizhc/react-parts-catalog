@@ -100,6 +100,7 @@ class Navbar extends React.Component<WithStyles<typeof styles>, State> {
         auth.signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(credential => {
                 console.log(credential);
+                this.state.openSnack = true;
             })
     };
 
@@ -158,13 +159,9 @@ class Navbar extends React.Component<WithStyles<typeof styles>, State> {
                 </Dialog>
 
                 <Snackbar
-                    open={this.state.open}
+                    open={this.state.openSnack}
                     onClose={this.handleClose}
-                    TransitionComponent={this.state.Transition}
-                    ContentProps={{
-                        'aria-describedby': 'message-id',
-                    }}
-                    message={<span id="message-id">I love snacks</span>}
+                    message={<span id="message-id">Logado.</span>}
                 />
             </div>
         );
