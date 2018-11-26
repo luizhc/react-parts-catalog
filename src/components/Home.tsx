@@ -51,7 +51,7 @@ const ref = db.collection('products');
 class Home extends React.Component<WithStyles<typeof styles>, State> {
   state: State = {
     products: [],
-    
+
     product: {
       uid: '',
       group: {
@@ -92,7 +92,7 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
   }
 
   handleChange = quantity => event => {
-    console.log(this.state.product.unitary);
+
     this.setState({
       product: {
         uid: this.state.product.uid,
@@ -111,11 +111,13 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
         unitary: this.state.product.unitary,
         brand: {
           nome: this.state.product.brand.nome
-        },
-        [quantity]: event.target.value,
-        total: event.target.value * this.state.product.unitary
-      }
+        }
+      },
+      quantity: +event.target.value,
+      total: +event.target.value * this.state.product.unitary
     });
+
+    console.log(+event.target.value * this.state.product.unitary);
   };
 
   submit = (event) => {
@@ -203,14 +205,9 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
               required
               autoFocus
             />
-            <TextField
-              type="text"
-              name="total"
-              className={classes.textField}
-              value={this.state.total}
-              label="Total"
-              required
-            />
+            <label>
+              {this.state.total}
+            </label>
             <Tooltip title="Salvar">
               <Button type="submit" className="btn-submit">
                 <i className="material-icons">
