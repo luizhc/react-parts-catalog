@@ -16,7 +16,7 @@ const styles = (theme: Theme) =>
     root: {
       textAlign: 'center',
       paddingTop: theme.spacing.unit * 20,
-    },
+    }
   });
 
 type State = {
@@ -24,7 +24,7 @@ type State = {
 };
 
 class Home extends React.Component<WithStyles<typeof styles>, State> {
-  state = {
+  state: State = {
     open: false,
   };
 

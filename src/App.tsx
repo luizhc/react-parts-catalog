@@ -2,14 +2,18 @@ import './App.css';
 import './firebase';
 
 import * as React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import PartsList from './components/parts/PartsList';
+import Navbar from './components/navbar/Navbar';
 
 class App extends React.Component {
   public render(): React.ReactNode {
     return (
-      // <NavBar />
-      <PartsList/>
+      <BrowserRouter>
+        <div>
+          <Navbar />
+        </div>
+      </BrowserRouter>
     );
   }
 }

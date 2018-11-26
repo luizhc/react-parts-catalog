@@ -1,22 +1,18 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, FormControl } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import * as React from 'react';
 
-const drawerWidth = 240;
+import Main from './Main';
+import Routes from './Routes';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -27,15 +23,16 @@ const styles = (theme: Theme) =>
             zIndex: theme.zIndex.drawer + 1,
         },
         drawer: {
-            width: drawerWidth,
+            width: 240,
             flexShrink: 0,
         },
         drawerPaper: {
-            width: drawerWidth,
+            width: 240,
         },
         content: {
             flexGrow: 1,
             padding: theme.spacing.unit * 3,
+            marginTop: 50
         },
         toolbar: theme.mixins.toolbar,
         grow: {
@@ -47,13 +44,19 @@ const styles = (theme: Theme) =>
         }
     });
 
-type State = {
+interface State {
     anchorEl: any;
+    openDialog: boolean;
+    name: string;
+    password: string;
 };
 
-class MenuAppBar extends React.PureComponent<WithStyles<typeof styles>, State> {
+class Navbar extends React.Component<WithStyles<typeof styles>, State> {
     state: State = {
         anchorEl: null,
+        openDialog: false,
+        name: '',
+        password: ''
     };
 
     handleMenu = (event: any) => {
@@ -64,14 +67,29 @@ class MenuAppBar extends React.PureComponent<WithStyles<typeof styles>, State> {
         this.setState({ anchorEl: null });
     };
 
+    handleCloseDialog = () => {
+        this.setState({
+            openDialog: false
+        });
+    };
+
+    handleClick = () => {
+        this.setState({
+            openDialog: true,
+        });
+    };
+
     render(): React.ReactNode {
         const { classes } = this.props;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
+        const actions = [
+            <Button color="primary" onClick={this.handleCloseDialog}>Cancelar</Button>,
+            <Button type="submit" color="primary">Logar</Button>,
+        ];
 
         return (
             <div className={classes.root}>
-                <CssBaseline />
                 <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar>
                         <Typography variant="h6" color="inherit" className={classes.grow}>
@@ -83,7 +101,7 @@ class MenuAppBar extends React.PureComponent<WithStyles<typeof styles>, State> {
                             </IconButton>
                             <Menu id="menu-appbar" anchorEl={anchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }} open={open} onClose={this.handleClose}>
-                                <MenuItem onClick={this.handleClose}>Login</MenuItem>
+                                <MenuItem onClick={this.handleClick}>Login</MenuItem>
                             </Menu>
                         </div>
                     </Toolbar>
@@ -91,23 +109,32 @@ class MenuAppBar extends React.PureComponent<WithStyles<typeof styles>, State> {
                 <Drawer className={classes.drawer} variant="permanent" classes={{ paper: classes.drawerPaper }}>
                     <div className={classes.toolbar} />
                     <List>
-                        {['Dashboard', 'Clientes', 'Peças', 'Fabricantes', 'Produtos'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
+                        <Routes></Routes>
                     </List>
                 </Drawer>
                 <main className={classes.content}>
-                    <div className={classes.toolbar}></div>
-                    <Typography paragraph>
-                        TESTE
-                    </Typography>
+                    <Main></Main>
                 </main>
+
+                <Dialog open={this.state.openDialog} onClose={this.handleCloseDialog}>
+                    <DialogTitle>Realizar o Login</DialogTitle>
+                    <DialogContent>
+                        <form onSubmit={(e) => { e.preventDefault(); alert('Submitted form!'); this.handleClose(); }}>
+                            <FormControl fullWidth>
+                                <TextField name="email" label="E-mail" value={this.state.name} />
+                            </FormControl>
+                            <FormControl fullWidth>
+                                <TextField name="pwd" type="password" label="Senha" value={this.state.name} />
+                            </FormControl>
+                            <div style={{ textAlign: 'right', padding: 8, margin: '24px -24px -24px -24px' }}>
+                                {actions}
+                            </div>
+                        </form>
+                    </DialogContent>
+                </Dialog>
             </div>
         );
     }
 }
 
-export default withStyles(styles)(MenuAppBar);
+export default withStyles(styles)(Navbar);

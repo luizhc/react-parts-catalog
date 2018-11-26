@@ -1,4 +1,16 @@
-import { AppBar, Button, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Toolbar, Typography, Tooltip } from '@material-ui/core';
+import {
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TextField,
+    Toolbar,
+    Tooltip,
+    Typography,
+} from '@material-ui/core';
 import * as React from 'react';
 import { db } from 'src/firebase';
 
@@ -8,11 +20,19 @@ db.settings({
 
 const ref = db.collection('parts');
 
-class PartsList extends React.Component<{}> {
-    // state: PartsInterface = {
-    //     name: ''
-    // };
-    state = {
+export interface Part {
+    uid: string;
+    name: string;
+}
+
+interface State {
+    pecas: Part[];
+    peca: Part;
+    focus: any;
+};
+
+class PartsList extends React.Component<{}, State> {
+    state: State = {
         pecas: [],
         peca: {
             uid: null,
@@ -28,9 +48,9 @@ class PartsList extends React.Component<{}> {
     get() {
         ref.limit(100).orderBy('name').get()
             .then(snapshot => {
-                let parts: any[] = [];
+                let parts: Part[] = [];
                 snapshot.forEach(doc => {
-                    parts.push({ uid: doc.id, ...doc.data() });
+                    parts.push({ uid: doc.id, ...doc.data() as Part });
                 })
                 this.setState({ pecas: parts });
             })
@@ -69,7 +89,7 @@ class PartsList extends React.Component<{}> {
         this.setState({
             peca: {
                 uid: this.state.peca.uid,
-                [name]: event.target.value
+                name: event.target.value
             }
         });
     };
@@ -86,17 +106,9 @@ class PartsList extends React.Component<{}> {
     public render(): React.ReactNode {
         const { pecas } = this.state;
         return (
-            <React.Fragment>
-                <AppBar position="static">
-                    <Toolbar>
-                        <Typography variant="headline" color="inherit">
-                            Catálogo de Peças
-                            </Typography>
-                    </Toolbar>
-                </AppBar>
                 <Paper>
                     <Toolbar>
-                        <Typography variant="headline" component="h2">
+                        <Typography variant="h5" component="h2">
                             Peças
                         </Typography>
                     </Toolbar>
@@ -154,7 +166,6 @@ class PartsList extends React.Component<{}> {
                         </TableBody>
                     </Table>
                 </Paper>
-            </React.Fragment>
         )
     }
 }
