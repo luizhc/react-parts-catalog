@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, FormControl } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogTitle, FormControl, TextField, Snackbar } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,6 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import * as React from 'react';
+import { auth } from 'src/firebase';
 
 import Main from './Main';
 import Routes from './Routes';
@@ -47,20 +48,36 @@ const styles = (theme: Theme) =>
 interface State {
     anchorEl: any;
     openDialog: boolean;
-    name: string;
+    email: string;
     password: string;
+    openSnack: boolean;
 };
 
 class Navbar extends React.Component<WithStyles<typeof styles>, State> {
     state: State = {
         anchorEl: null,
         openDialog: false,
-        name: '',
-        password: ''
+        email: '',
+        password: '',
+        openSnack: false
     };
 
     handleMenu = (event: any) => {
         this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleEmail = email => (event: any) => {
+        this.setState({
+            email: event.target.value,
+            password: this.state.password
+        });
+    };
+
+    handlePassword = password => event => {
+        this.setState({
+            email: this.state.email,
+            password: event.target.value
+        });
     };
 
     handleClose = () => {
@@ -75,8 +92,15 @@ class Navbar extends React.Component<WithStyles<typeof styles>, State> {
 
     handleClick = () => {
         this.setState({
-            openDialog: true,
+            openDialog: true
         });
+    };
+
+    handleSubmit = () => {
+        auth.signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then(credential => {
+                console.log(credential);
+            })
     };
 
     render(): React.ReactNode {
@@ -119,12 +143,12 @@ class Navbar extends React.Component<WithStyles<typeof styles>, State> {
                 <Dialog open={this.state.openDialog} onClose={this.handleCloseDialog}>
                     <DialogTitle>Realizar o Login</DialogTitle>
                     <DialogContent>
-                        <form onSubmit={(e) => { e.preventDefault(); alert('Submitted form!'); this.handleClose(); }}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.handleSubmit(); this.handleCloseDialog(); }}>
                             <FormControl fullWidth>
-                                <TextField name="email" label="E-mail" value={this.state.name} />
+                                <TextField type="text" name="email" label="E-mail" value={this.state.email} onChange={this.handleEmail('email')} />
                             </FormControl>
                             <FormControl fullWidth>
-                                <TextField name="pwd" type="password" label="Senha" value={this.state.name} />
+                                <TextField name="pwd" type="password" label="Senha" value={this.state.password} onChange={this.handlePassword('password')} />
                             </FormControl>
                             <div style={{ textAlign: 'right', padding: 8, margin: '24px -24px -24px -24px' }}>
                                 {actions}
@@ -132,6 +156,16 @@ class Navbar extends React.Component<WithStyles<typeof styles>, State> {
                         </form>
                     </DialogContent>
                 </Dialog>
+
+                <Snackbar
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    TransitionComponent={this.state.Transition}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">I love snacks</span>}
+                />
             </div>
         );
     }
