@@ -51,15 +51,23 @@ const ref = db.collection('products');
 class Home extends React.Component<WithStyles<typeof styles>, State> {
   state: State = {
     products: [],
+    
     product: {
       uid: '',
       group: {
         uid: '',
         nome: ''
       },
+      manufacturer: {
+        uid: '',
+        name: ''
+      },
       parts: {
         uid: '',
         name: ''
+      },
+      brand: {
+        nome: ''
       },
       unitary: 0,
     }
@@ -83,7 +91,8 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
       });
   }
 
-  handleChange = name => event => {
+  handleChange = quantity => event => {
+    console.log(this.state.product.unitary);
     this.setState({
       product: {
         uid: this.state.product.uid,
@@ -103,8 +112,8 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
         brand: {
           nome: this.state.product.brand.nome
         },
-        quantity: this.state.quantity,
-        total: this.state.quantity * this.state.product.unitary
+        [quantity]: event.target.value,
+        total: event.target.value * this.state.product.unitary
       }
     });
   };
@@ -185,7 +194,7 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
               required
             />
             <TextField
-              type="number"
+              type="text"
               name="quantity"
               className={classes.textField}
               value={this.state.quantity}
@@ -195,7 +204,7 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
               autoFocus
             />
             <TextField
-              type="number"
+              type="text"
               name="total"
               className={classes.textField}
               value={this.state.total}
