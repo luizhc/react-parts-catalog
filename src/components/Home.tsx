@@ -18,8 +18,6 @@ import * as React from 'react';
 import { db } from 'src/firebase';
 
 import withRoot from '../withRoot';
-import { Manufacturers } from './manufacturer/Manufacturer';
-import { Part } from './parts/PartsList';
 import { Product } from './products/Products';
 
 db.settings({
@@ -36,6 +34,17 @@ const styles = (theme: Theme) =>
       marginLeft: theme.spacing.unit,
       marginRight: theme.spacing.unit,
       width: 200,
+    },
+    centerTitle: {
+      margin: 'auto'
+    },
+    image: {
+      display: 'block',
+      margin: '5px auto 25px auto',
+      borderRadius: '6px',
+      maxWidth: '300px',
+      maxHeight: '300px',
+      boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)'
     }
   });
 
@@ -44,6 +53,7 @@ interface State {
   product: Product;
   quantity?: number;
   total?: number;
+  url?: string;
 };
 
 const ref = db.collection('products');
@@ -51,7 +61,7 @@ const ref = db.collection('products');
 class Home extends React.Component<WithStyles<typeof styles>, State> {
   state: State = {
     products: [],
-    
+
     product: {
       uid: '',
       group: {
@@ -70,6 +80,7 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
         nome: ''
       },
       unitary: 0,
+      url: ''
     }
   };
 
@@ -113,7 +124,8 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
           nome: this.state.product.brand.nome
         },
         [quantity]: event.target.value,
-        total: event.target.value * this.state.product.unitary
+        total: event.target.value * this.state.product.unitary,
+        url: this.state.product.url
       }
     });
   };
@@ -143,7 +155,8 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
           uid: '',
           name: ''
         },
-        unitary: 0
+        unitary: 0,
+        url: ''
       },
       quantity: 0,
       total: 0
@@ -151,6 +164,8 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
   }
 
   edit = (data) => {
+    console.log(data);
+
     this.setState({
       product: data
     });
@@ -163,10 +178,16 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
     return (
       <Paper>
         <Toolbar>
-          <Typography variant="h4" component="h4">
-            Selecione um item e realize seu pedido
+          <Typography variant="h4" component="h4" className={classes.centerTitle}>
+            Bem-vindo ao catálogo
           </Typography>
         </Toolbar>
+        <Toolbar>
+          <Typography variant="h6" component="h2" className={classes.centerTitle}>
+            Selecione um produto ou solicite um pedido.
+          </Typography>
+        </Toolbar>
+        <img className={classes.image} src={this.state.product.url} />
         <Toolbar>
           <form onSubmit={this.submit}>
             <TextField
