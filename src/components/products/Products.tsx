@@ -27,9 +27,14 @@ db.settings({
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: {
-            textAlign: 'center',
-            paddingTop: theme.spacing.unit * 20,
+        container: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+        textField: {
+            marginLeft: theme.spacing.unit,
+            marginRight: theme.spacing.unit,
+            width: 200,
         }
     });
 
@@ -38,7 +43,7 @@ interface Group {
     nome: string;
 }
 
-interface Product {
+export interface Product {
     uid?: string;
     manufacturer?: Manufacturers;
     createdAt?: string;
@@ -75,7 +80,7 @@ class Products extends React.Component<WithStyles<typeof styles>, State> {
     }
 
     get() {
-        ref.limit(100).orderBy('name').get()
+        ref.limit(100).orderBy('group.nome').get()
             .then(snapshot => {
                 let products: Product[] = [];
                 snapshot.forEach(doc => {
@@ -170,14 +175,22 @@ class Products extends React.Component<WithStyles<typeof styles>, State> {
                     <TableHead>
                         <TableRow>
                             <TableCell>Código</TableCell>
-                            <TableCell>Nome</TableCell>
+                            <TableCell>Fabricante</TableCell>
+                            <TableCell>Modelo</TableCell>
+                            <TableCell>Grupo</TableCell>
+                            <TableCell>Peça</TableCell>
+                            <TableCell>Valor</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {products.map(product => (
                             <TableRow key={product.uid}>
-                                <TableCell> {product.group.uid} </TableCell>
+                                <TableCell> {product.uid} </TableCell>
+                                <TableCell> {product.manufacturer.name} </TableCell>
+                                <TableCell> {product.brand.nome} </TableCell>
                                 <TableCell> {product.group.nome} </TableCell>
+                                <TableCell> {product.parts.name} </TableCell>
+                                <TableCell> {product.unitary} </TableCell>
                                 <TableCell>
                                     <Tooltip title="Editar">
                                         <Button onClick={() => this.edit(product)}>

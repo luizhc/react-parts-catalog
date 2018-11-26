@@ -25,9 +25,14 @@ db.settings({
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: {
-            textAlign: 'center',
-            paddingTop: theme.spacing.unit * 20,
+        container: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+        textField: {
+            marginLeft: theme.spacing.unit,
+            marginRight: theme.spacing.unit,
+            width: 200,
         }
     });
 
@@ -82,6 +87,10 @@ class Customer extends React.Component<WithStyles<typeof styles>, State> {
         this.setState({
             customer: {
                 uid: this.state.customer.uid,
+                email: this.state.customer.email,
+                phone: this.state.customer.phone,
+                address: this.state.customer.address,
+                cpf: this.state.customer.cpf,
                 name: event.target.value
             }
         });
@@ -91,6 +100,10 @@ class Customer extends React.Component<WithStyles<typeof styles>, State> {
         this.setState({
             customer: {
                 uid: this.state.customer.uid,
+                name: this.state.customer.name,
+                phone: this.state.customer.phone,
+                address: this.state.customer.address,
+                email: this.state.customer.email,
                 cpf: event.target.value
             }
         });
@@ -100,6 +113,10 @@ class Customer extends React.Component<WithStyles<typeof styles>, State> {
         this.setState({
             customer: {
                 uid: this.state.customer.uid,
+                name: this.state.customer.name,
+                email: this.state.customer.email,
+                address: this.state.customer.address,
+                cpf: this.state.customer.cpf,
                 phone: event.target.value
             }
         });
@@ -109,6 +126,10 @@ class Customer extends React.Component<WithStyles<typeof styles>, State> {
         this.setState({
             customer: {
                 uid: this.state.customer.uid,
+                name: this.state.customer.name,
+                phone: this.state.customer.phone,
+                address: this.state.customer.address,
+                cpf: this.state.customer.cpf,
                 email: event.target.value
             }
         });
@@ -117,6 +138,10 @@ class Customer extends React.Component<WithStyles<typeof styles>, State> {
         this.setState({
             customer: {
                 uid: this.state.customer.uid,
+                name: this.state.customer.name,
+                phone: this.state.customer.phone,
+                email: this.state.customer.email,
+                cpf: this.state.customer.cpf,
                 address: event.target.value
             }
         });
@@ -139,7 +164,11 @@ class Customer extends React.Component<WithStyles<typeof styles>, State> {
         this.setState({
             customer: {
                 uid: '',
-                name: ''
+                name: '',
+                cpf: '',
+                email: '',
+                phone: '',
+                address: ''
             }
         });
     }
@@ -157,16 +186,17 @@ class Customer extends React.Component<WithStyles<typeof styles>, State> {
 
     render() {
         const { customers } = this.state;
+        const { classes } = this.props;
 
         return (
             <Paper>
                 <Toolbar>
                     <Typography variant="h5" component="h2">
                         Clientes
-            </Typography>
+                    </Typography>
                 </Toolbar>
                 <Toolbar>
-                    <form onSubmit={this.submit}>
+                    <form onSubmit={this.submit} className={classes.container}>
                         <TextField
                             type="text"
                             name="name"
@@ -180,37 +210,37 @@ class Customer extends React.Component<WithStyles<typeof styles>, State> {
                             type="text"
                             name="cpf"
                             value={this.state.customer.cpf}
+                            className={classes.textField}
                             label="CPF"
                             required
                             onChange={this.handleChangeCpf('cpf')}
-                            autoFocus
                         />
                         <TextField
                             type="email"
                             name="email"
                             value={this.state.customer.email}
+                            className={classes.textField}
                             label="E-mail"
                             required
                             onChange={this.handleChangeEmail('email')}
-                            autoFocus
                         />
                         <TextField
                             type="text"
                             name="phone"
                             value={this.state.customer.phone}
+                            className={classes.textField}
                             label="Telefone"
                             required
                             onChange={this.handleChangePhone('phone')}
-                            autoFocus
                         />
                         <TextField
                             type="text"
                             name="address"
                             value={this.state.customer.address}
+                            className={classes.textField}
                             label="Endereço"
                             required
                             onChange={this.handleChangeAddress('address')}
-                            autoFocus
                         />
                         <Tooltip title="Salvar">
                             <Button type="submit" className="btn-submit">

@@ -25,18 +25,24 @@ db.settings({
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: {
-            textAlign: 'center',
-            paddingTop: theme.spacing.unit * 20,
+        container: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+        textField: {
+            marginLeft: theme.spacing.unit,
+            marginRight: theme.spacing.unit,
+            width: 200,
         }
     });
 
 export interface Manufacturers {
     uid?: string;
     name?: string;
-    cpf?: string;
+    cnpj?: string;
     email?: string;
     phone?: string;
+    address?: string;
 }
 
 interface State {
@@ -149,14 +155,20 @@ class Manufacturer extends React.Component<WithStyles<typeof styles>, State> {
                     <TableHead>
                         <TableRow>
                             <TableCell>Código</TableCell>
-                            <TableCell>Nome</TableCell>
+                            <TableCell>CNPJ</TableCell>
+                            <TableCell>E-mail</TableCell>
+                            <TableCell>Telefone</TableCell>
+                            <TableCell>Endereço</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {manufacturers.map(manufacturer => (
                             <TableRow key={manufacturer.uid}>
                                 <TableCell> {manufacturer.uid} </TableCell>
-                                <TableCell> {manufacturer.name} </TableCell>
+                                <TableCell> {manufacturer.cnpj} </TableCell>
+                                <TableCell> {manufacturer.email} </TableCell>
+                                <TableCell> {manufacturer.phone} </TableCell>
+                                <TableCell> {manufacturer.address} </TableCell>
                                 <TableCell>
                                     <Tooltip title="Editar">
                                         <Button onClick={() => this.edit(manufacturer)}>
