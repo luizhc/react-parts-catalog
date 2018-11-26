@@ -122,18 +122,11 @@ class Home extends React.Component<WithStyles<typeof styles>, State> {
         unitary: this.state.product.unitary,
         brand: {
           nome: this.state.product.brand.nome
-<<<<<<< HEAD
         },
         [quantity]: event.target.value,
         total: event.target.value * this.state.product.unitary,
         url: this.state.product.url
       }
-=======
-        }
-      },
-      quantity: +event.target.value,
-      total: +event.target.value * this.state.product.unitary
->>>>>>> 0c5a47538224a4ba1905523ac006cf36d09bbd05
     });
 
     console.log(+event.target.value * this.state.product.unitary);
