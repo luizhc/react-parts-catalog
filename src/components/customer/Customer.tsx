@@ -19,10 +19,6 @@ import { db } from 'src/firebase';
 
 import withRoot from '../../withRoot';
 
-db.settings({
-    timestampsInSnapshots: true
-});
-
 const styles = (theme: Theme) =>
     createStyles({
         container: {

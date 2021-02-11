@@ -19,11 +19,7 @@ import { db } from 'src/firebase';
 
 import withRoot from '../../withRoot';
 import { Manufacturers } from '../manufacturer/Manufacturer';
-import { Part } from '../parts/PartsList';
-
-db.settings({
-    timestampsInSnapshots: true
-});
+import { Part } from '../parts/Parts';
 
 const styles = (theme: Theme) =>
     createStyles({
